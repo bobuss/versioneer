@@ -8,11 +8,43 @@ class VersioneerExtension {
     private ProjectInfo info
     private SCMService cached_scm
 
+    /**
+     * List of environment vars when detached branch
+     */
     public List envs = []
     public Closure branchParser
 
+    /**
+     * Prefix of release tag
+     */
+    public String prefix = 'v'
+
+    /**
+     * When upgrading to a new version, which strategy to choose?
+     */
+    public String strategy = 'minor'
+
+    /**
+     * Build number, should given by CI, mostly used by RPM version
+     */
+    public Integer build = 1
+
+    /**
+     * Which version must be used for project.version?
+     * one of semver, maven or rpm
+     */
+    public String flavor = 'semver'
+
     VersioneerExtension(Project project) {
         this.project = project
+
+        project.rootProject.allprojects {
+			version = new VersionProxy(this)
+		}
+    }
+
+    void reset() {
+        info = null
     }
 
     ProjectInfo getInfo() {
@@ -38,13 +70,7 @@ class VersioneerExtension {
             description.closestTag -= prefix ?: ''
         }
 
-        new ProjectInfo(branch: branch,
-                        type: branchInfo.type,
-                        serie: branchInfo.serie,
-                        closestTag: description.closestTag,
-                        hash: description.hash,
-                        distance: description.distance,
-                        dirty: description.dirty)
+        new ProjectInfo(branch, branchInfo, description, strategy, build)
     }
 
     SCMService getScm() {

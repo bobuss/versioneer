@@ -17,6 +17,22 @@ class ProjectInfo {
     Integer build = 1
 
     ProjectInfo(String branch,
+                BranchInfo branchInfo,
+                Description description,
+                String strategy,
+                Integer build) {
+        this.branch = branch
+        this.type = branchInfo.type
+        this.serie = branchInfo.serie
+        this.closestTag = description.closestTag
+        this.hash = description.hash
+        this.distance = description.distance
+        this.dirty = description.dirty
+        this.strategy = strategy
+        this.build = build
+    }
+
+    ProjectInfo(String branch,
                 String type,
                 String serie,
                 String closestTag,

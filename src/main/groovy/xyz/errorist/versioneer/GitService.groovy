@@ -22,7 +22,7 @@ class GitService extends SCMService {
             def response = execute(cmd)
             def result = null
             if (response.exit) {
-                log.error "${cmd} failed: ${response.stderr}"
+                throw new RuntimeException( "${cmd} failed: ${response.stderr}")
             } else if (response.stdout == 'HEAD') {
                 log.error "${cmd} returned HEAD"
             } else {
@@ -41,12 +41,12 @@ class GitService extends SCMService {
         branch ?: currentBranch()
     }
 
-    String currentBranch(String[] envs) {
+    String currentBranch(List envs) {
         def branch = envs.findResult { key -> System.env[key] }
         branch ?: currentBranch()
     }
 
-    Description describe(String prefix = null) {
+    Description describe(String prefix) {
         def cmd = ['git', 'describe', '--tags', '--always', '--long']
         if (prefix) {
             cmd << '--match' << "${prefix}*"

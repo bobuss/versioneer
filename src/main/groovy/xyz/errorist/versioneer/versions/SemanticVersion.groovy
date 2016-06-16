@@ -127,7 +127,7 @@ class SemanticVersion {
      */
     String getFull() {
         def full = clean
-        if (meta) {
+        if (meta != null) {
             full += "+$meta"
         }
         full

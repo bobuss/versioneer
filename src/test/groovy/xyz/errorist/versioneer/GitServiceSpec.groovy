@@ -92,4 +92,29 @@ class GitServiceSpec extends Specification {
         assert desc2.dirty == false
         assert desc2.hash == '0997e80'
     }
+
+    def "not versioned"() {
+        given:
+        def repo = new GitRepo()
+        def scm = new GitService(repo.gitTree)
+        repo.init()
+
+        when:
+        scm.describe(prefix)
+
+        then:
+        thrown RuntimeException
+
+        when:
+        scm.describe("v")
+
+        then:
+        thrown RuntimeException
+
+        when:
+        scm.currentBranch()
+
+        then:
+        thrown RuntimeException
+    }
 }
