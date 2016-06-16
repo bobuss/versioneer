@@ -1,0 +1,9 @@
+unittest:
+  script:
+    - gradle test --info
+  cache:
+    paths:
+      - .gradle/
+      - build/
+  tags:
+    - gradle
