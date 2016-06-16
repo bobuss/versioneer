@@ -25,6 +25,67 @@ Their are 3 types of branchs:
 - feature branch, which are found by this regex ``feature[/-](?<serie>.+)``
 - the others
 
+Examples
+--------
+
+with git history::
+
+  * e585849 - (HEAD -> release/0.x, tag: v0.0.1)
+  * 2d5214c -
+  * 07cc598 -
+
+it will be parsed as:
+
++----------------------------+-------------+
+| versioneer.info.branch     | release/0.x |
++----------------------------+-------------+
+| versioneer.info.type       | release     |
++----------------------------+-------------+
+| versioneer.info.serie      | 0.x         |
++----------------------------+-------------+
+| versioneer.info.closestTag | 0.0.1       |
++----------------------------+-------------+
+| versioneer.info.distance   | 0           |
++----------------------------+-------------+
+| versioneer.info.hash       | e585849     |
++----------------------------+-------------+
+| versioneer.info.semver     | 0.0.1       |
++----------------------------+-------------+
+| versioneer.info.maven      | 0.0.1       |
++----------------------------+-------------+
+| versioneer.info.rpm        | 0.0.1-1     |
++----------------------------+-------------+
+
+with git history::
+
+  * e754a0b - (HEAD -> release/0.x)
+  * e585849 - (tag: v0.0.1)
+  * 2d5214c -
+  * 07cc598 -
+
+it will be parsed as:
+
++----------------------------+--------------------------+
+| versioneer.info.branch     | release/0.x              |
++----------------------------+--------------------------+
+| versioneer.info.type       | release                  |
++----------------------------+--------------------------+
+| versioneer.info.serie      | 0.x                      |
++----------------------------+--------------------------+
+| versioneer.info.closestTag | 0.0.1                    |
++----------------------------+--------------------------+
+| versioneer.info.distance   | 1                        |
++----------------------------+--------------------------+
+| versioneer.info.hash       | e754a0b                  |
++----------------------------+--------------------------+
+| versioneer.info.semver     | 0.0.1+post.1.e754a0b     |
++----------------------------+--------------------------+
+| versioneer.info.maven      | 0.1.0-ALPHA-0-SNAPSHOT   |
++----------------------------+--------------------------+
+| versioneer.info.rpm        | 0.0.1-1.post.1.e754a0b   |
++----------------------------+--------------------------+
+
+
 .. _SemVer: http://semver.org
 .. _Maven: https://docs.oracle.com/middleware/1212/core/MAVEN/maven_version.htm
 .. _RPM: https://fedoraproject.org/wiki/Packaging:NamingGuidelines
