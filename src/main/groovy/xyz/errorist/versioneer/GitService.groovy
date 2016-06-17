@@ -17,23 +17,43 @@ class GitService extends SCMService {
         this.gitTree = projectDir
     }
 
+    /**
+     * Tells if repository has been isInitialized
+     */
+    Boolean isInitialized() {
+        def file = new File(gitTree, '.git')
+        file.exists()
+    }
+
+    /**
+     * Returns the current branch
+     */
     String currentBranch() {
-        def executor = { cmd ->
-            def response = execute(cmd)
-            def result = null
-            if (response.exit) {
-                throw new RuntimeException( "${cmd} failed: ${response.stderr}")
-            } else if (response.stdout == 'HEAD') {
-                log.error "${cmd} returned HEAD"
-            } else {
-                result = response.stdout.trim()
-            }
-            result
+        if (!isInitialized()) {
+            throw new GitCommandException("Not a git repository")
         }
-        def res = [
+
+        def executor = { cmd ->
+            execute(cmd).with {
+                def branch = stdout.trim()
+                if (exit) {
+                    this.log.error "${cmd} failed [${exit}]: ${stderr}"
+                } else if (branch == 'HEAD') {
+                    this.log.error "${cmd} returned HEAD"
+                    return null
+                } else {
+                    return branch ?: null
+                }
+            }
+        }
+        def branch = [
             { executor(['git', 'rev-parse', '--abbrev-ref', 'HEAD']) },
             { executor(['git', 'name-rev', '--name-only', 'HEAD']) }
         ].findResult { closure -> closure() }
+        if (branch == null) {
+            throw new GitCommandException("branch as no name")
+        }
+        branch
     }
 
     String currentBranch(String env) {
@@ -46,7 +66,14 @@ class GitService extends SCMService {
         branch ?: currentBranch()
     }
 
+    /**
+     * Describe current commit
+     */
     Description describe(String prefix) {
+        if (!isInitialized()) {
+            throw new GitCommandException("Not a git repository")
+        }
+
         def cmd = ['git', 'describe', '--tags', '--always', '--long']
         if (prefix) {
             cmd << '--match' << "${prefix}*"
@@ -54,7 +81,7 @@ class GitService extends SCMService {
 
         execute(cmd).with {
             if (exit) {
-                throw new RuntimeException("undescridable: ${response.stderr}")
+                throw new GitCommandException("undescridable: ${stderr}")
             } else {
                 return Description.parse(stdout.trim())
             }

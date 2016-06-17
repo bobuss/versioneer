@@ -100,21 +100,21 @@ class GitServiceSpec extends Specification {
         repo.init()
 
         when:
-        scm.describe(prefix)
+        scm.describe(null)
 
         then:
-        thrown RuntimeException
+        thrown GitCommandException
 
         when:
         scm.describe("v")
 
         then:
-        thrown RuntimeException
+        thrown GitCommandException
 
         when:
         scm.currentBranch()
 
         then:
-        thrown RuntimeException
+        thrown GitCommandException
     }
 }

@@ -1,9 +1,13 @@
+plugins {
+  id "com.gradle.plugin-publish" version "0.9.4"
+}
+
 apply plugin: 'groovy'
 apply plugin: 'jacoco'
 apply plugin: 'java-gradle-plugin'
 
+version = '1.0.5'
 group = 'xyz.errorist'
-version = '1.0-SNAPSHOT'
 
 repositories {
     jcenter()
@@ -16,4 +20,22 @@ dependencies {
         exclude module: 'groovy-all'
     }
     testCompile 'com.github.stefanbirkner:system-rules:1.16.0'
+    testCompile 'org.springframework.boot:spring-boot:1.2.1.RELEASE'
+    testRuntime "cglib:cglib-nodep:3.2.2"
+    testRuntime "org.objenesis:objenesis:2.4"
+}
+
+pluginBundle {
+  website = 'https://lab.errorist.xyz/gradle/versioneer'
+  vcsUrl = 'https://lab.errorist.xyz/gradle/versioneer'
+
+  description = 'Infer version from git references'
+  tags = ['version', 'git']
+
+  plugins {
+    versioneerPlugin {
+      id = 'xyz.errorist.versioneer'
+      displayName = 'Versioneer'
+    }
+  }
 }

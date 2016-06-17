@@ -66,7 +66,7 @@ class VersioneerExtension {
         }
 
         // baaad, but I won't give a fuck
-        if (description.closestTag) {
+        if (description?.closestTag) {
             description.closestTag -= prefix ?: ''
         }
 

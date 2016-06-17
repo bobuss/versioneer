@@ -1,4 +1,6 @@
 package xyz.errorist.versioneer
+import java.util.regex.Matcher
+
 
 class Description {
     String closestTag
@@ -27,16 +29,17 @@ class Description {
         if (dirty) {
             description = description[0..-7]
         }
-        if (description.contains('-g')) {
-            def (a, b, c) = description.split('-', 3)
-            closestTag = a
-            distance = b as int
-            hash = c[1..-1]
-        } else {
-            closestTag = null
-            distance = null
-            hash = description
+
+        switch(description) {
+            case ~/(?<tag>.+)-(?<distance>\d+)-g(?<hash>[0-9a-f]+)/:
+                closestTag = Matcher.lastMatcher.group('tag')
+                distance = Matcher.lastMatcher.group('distance') as int
+                hash = Matcher.lastMatcher.group('hash')
+                break
+            default:
+                hash = description
         }
+
         new Description(dirty, closestTag, distance, hash)
     }
 }
