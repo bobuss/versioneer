@@ -74,6 +74,9 @@ class ProjectInfoSpec extends Specification {
         'release' | '2.0'     | '2.0.1-rc.1' | 'abcdef' | 1        | '2.0.1-RC-2-SNAPSHOT'
         'release' | '2.0'     | null         | 'abcdef' | null     | '2.0.0-ALPHA-0-SNAPSHOT'
 
+        'release' | '2-rc.1'  | null         | 'abcdef' | null     | '2.0.0-RC-1-SNAPSHOT'
+        'release' | '2-rc.1'  | '2.0.0-rc.1' | 'abcdef' | null     | '2.0.0-RC-1'
+
         'feature' | 'foo-2.0' | '2.0.1'      | 'abcdef' | 0        | '0.0-FOO-2-0-SNAPSHOT'
         'feature' | 'foo-2.0' | '2.0.1'      | 'abcdef' | 1        | '0.0-FOO-2-0-SNAPSHOT'
         'feature' | 'foo-2.0' | '2.0.1'      | 'abcdef' | 42       | '0.0-FOO-2-0-SNAPSHOT'
@@ -118,6 +121,10 @@ class ProjectInfoSpec extends Specification {
         'release' | '2.0'     | '2.0.1-rc.1' | 'abcdef' | 0        | '2.0.1-0.1.rc.1'
         'release' | '2.0'     | '2.0.1-rc.1' | 'abcdef' | 1        | '2.0.1-0.1.rc.1.post.1.abcdef'
         'release' | '2.0'     | null         | 'abcdef' | null     | '2.0.0-0.1.dev.1.abcdef'
+
+        'release' | '2-rc.1'  | null         | 'abcdef' | null     | '2.0.0-0.1.rc.1.pre.abcdef'
+        'release' | '2-rc.1'  | '2.0.0-rc.1' | 'abcdef' | null     | '2.0.0-0.1.rc.1'
+        'release' | '2-rc.1'  | '2.0.0-rc.1' | 'abcdef' | 1        | '2.0.0-0.1.rc.1.post.1.abcdef'
 
         'feature' | 'foo-2.0' | '2.0.1'      | 'abcdef' | 0        | '2.0.1-1'
         'feature' | 'foo-2.0' | '2.0.1'      | 'abcdef' | 1        | '2.0.1-1.post.1.abcdef'

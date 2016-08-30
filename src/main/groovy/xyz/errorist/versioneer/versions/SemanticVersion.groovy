@@ -13,6 +13,7 @@ class SemanticVersion {
     private static final STAGE = 1
     private static final DEV = 2
     private static final POST = 4
+    private static final PRE = 8
 
     SemanticVersion(Integer major, Integer minor, Integer patch, String prerelease) {
         this.major = major ?: 0
@@ -74,7 +75,7 @@ class SemanticVersion {
      */
     String getStage() {
         switch(prerelease) {
-            case ~/(?<stage>(alpha|beta|rc)\.\d+)(?<dev>dev\.\d+)?/:
+            case ~/(?<stage>(alpha|beta|rc)(\.\d+)?)(\.)?(?<dev>dev(\.\d+)?)?/:
                 return Matcher.lastMatcher.group('stage')
         }
     }
@@ -87,7 +88,7 @@ class SemanticVersion {
      */
     String getDev() {
         switch(prerelease) {
-            case ~/(?<stage>(alpha|beta|rc)\.\d+)?(?<dev>dev\.\d+)/:
+            case ~/(?<stage>(alpha|beta|rc)(\.\d+)?)?(\.)?(?<dev>dev(\.\d+)?)/:
                 return Matcher.lastMatcher.group('dev')
         }
     }
@@ -103,6 +104,20 @@ class SemanticVersion {
             case ~/(?<post>post\.\d+).*/:
                 return Matcher.lastMatcher.group('post')
         }
+    }
+
+    /**
+     * Returns the pre part
+     *
+     * For example, given 1.2.3-alpha.1.dev.2+pre.foo,
+     * result is true
+     */
+    Boolean getPre() {
+        switch(meta) {
+            case ~/pre\..*/:
+                return true
+        }
+        return false
     }
 
     /**
@@ -157,6 +172,8 @@ class SemanticVersion {
         } else if (is(DEV)) {
             def version = prerelease('alpha.0').clean
             return new MavenVersion(version, true)
+        } else if (is(PRE)) {
+            return new MavenVersion(clean, true)
         }
         new MavenVersion(clean)
     }
@@ -181,6 +198,9 @@ class SemanticVersion {
         }
         if (POST & lookup) {
             response &= post ? true : false
+        }
+        if (PRE & lookup) {
+            response &= pre ? true : false
         }
         response
     }

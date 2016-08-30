@@ -19,14 +19,57 @@ Configuration::
 Branch naming
 -------------
 
-Their are 3 types of branchs:
+There are 3 types of branchs:
 
-- release branch, which are found by this regex ``release[/-](?<serie>.+)``
-- feature branch, which are found by this regex ``feature[/-](?<serie>.+)``
+- release branches, which are found by this regex ``release[/-](?<serie>.+)``
+- feature branches, which are found by this regex ``feature[/-](?<serie>.+)``
 - the others
 
-Examples
---------
+
+Release branches
+----------------
+
+Release branches should be in the form::
+
+    release/MAJOR[.MINOR[.PATCH]]
+
+And their tags should be in the form::
+
+    vMAJOR[.MINOR[.PATCH]]-PRERELEASE
+
+This kind of branch naming is allowed but may result in clumsy versions::
+
+    release/MAJOR[.MINOR[.PATCH]]-PRERELEASE
+
+
+Workflow examples
+-----------------
+
+Implement features in future release ``1.2.0``:
+
++------------------------------------------------+-------------------------------+
+| action                                         | semantic version              |
++------------------------------------------------+-------------------------------+
+| created branch ``release/1.2``                 | ``1.2.0-dev.1+HASH``          |
++------------------------------------------------+-------------------------------+
+| after X feature merges                         | ``1.2.0-dev.1+HASH``          |
++------------------------------------------------+-------------------------------+
+| after tagging ``v1.2.0-alpha.1`` on ``HEAD``   | ``1.2.0-alpha.1``             |
++------------------------------------------------+-------------------------------+
+| after X feature merges                         | ``1.2.0-alpha.1+post.X.HASH`` |
++------------------------------------------------+-------------------------------+
+| after tagging ``v1.2.0-beta.1`` on ``HEAD``    | ``1.2.0-beta.1``              |
++------------------------------------------------+-------------------------------+
+| after X feature merges                         | ``1.2.0-beta.1+post.X.HASH``  |
++------------------------------------------------+-------------------------------+
+| after tagging ``v1.2.0-rc.1`` on ``HEAD``      | ``1.2.0-rc.1``                |
++------------------------------------------------+-------------------------------+
+| after tagging ``v1.2.0`` on ``HEAD``           | ``1.2.0``                     |
++------------------------------------------------+-------------------------------+
+
+
+Parsing examples
+----------------
 
 with git history::
 
