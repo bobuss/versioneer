@@ -55,7 +55,16 @@ class ProjectInfo {
             version = closestTag
             version += (distance > 0) ? "+post.${distance}.${hash}" : ""
         } else if (type == 'release') {
-            version = "${serie.replace(/[\.x]+$/, '')}-dev.1+${hash}"
+            version = "${serie.replace(/[\.x]+$/, '')}"
+            if (serie.indexOf('-') > 0) {
+                def mmp = serie.substring(0, serie.indexOf('-'))
+                /* TODO ProjectInfo doesn't know branch/tag naming patterns. */
+                println "Prerelease in branch name may result in clumsy versions."
+                println "Consider to rename your branch `release/${mmp}` and tag it `v${version}`."
+                version += "+pre.${hash}"
+            } else {
+                version += "-dev.1+${hash}"
+            }
         } else if (type == 'feature') {
             version = "0.0.1-dev.1+${hash}"
         } else {

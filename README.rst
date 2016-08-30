@@ -19,11 +19,25 @@ Configuration::
 Branch naming
 -------------
 
-Their are 3 types of branchs:
+There are 3 types of branchs:
 
 - release branch, which are found by this regex ``release[/-](?<serie>.+)``
 - feature branch, which are found by this regex ``feature[/-](?<serie>.+)``
 - the others
+
+.. note::
+
+    Release branches should be in the form::
+
+      release/MAJOR[.MINOR[.PATCH]]
+
+    And their tags should be in the form::
+
+      vMAJOR[.MINOR[.PATCH]]-PRERELEASE
+
+    This kind of branch naming is allowed but may result in clumsy versions::
+
+      release/MAJOR[.MINOR[.PATCH]]-PRERELEASE
 
 Examples
 --------
