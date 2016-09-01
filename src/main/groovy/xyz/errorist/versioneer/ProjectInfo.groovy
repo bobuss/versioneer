@@ -2,6 +2,8 @@ package xyz.errorist.versioneer
 
 import xyz.errorist.versioneer.versions.*
 import java.util.regex.Matcher
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 
 class ProjectInfo {
@@ -15,6 +17,8 @@ class ProjectInfo {
 
     String strategy = 'minor'
     Integer build = 1
+
+    private final Logger log = LoggerFactory.getLogger('versioneer')
 
     ProjectInfo(String branch,
                 BranchInfo branchInfo,
@@ -59,8 +63,7 @@ class ProjectInfo {
             if (serie.indexOf('-') > 0) {
                 def mmp = serie.substring(0, serie.indexOf('-'))
                 /* TODO ProjectInfo doesn't know branch/tag naming patterns. */
-                println "Prerelease in branch name may result in clumsy versions."
-                println "Consider to rename your branch `release/${mmp}` and tag it `v${version}`."
+                log.info("Prerelease in branch name may result in clumsy versions.\nConsider to rename your branch `release/${mmp}` and tag it `v${version}`.")
                 version += "+pre.${hash}"
             } else {
                 version += "-dev.1+${hash}"
