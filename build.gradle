@@ -6,8 +6,8 @@ apply plugin: 'groovy'
 apply plugin: 'jacoco'
 apply plugin: 'java-gradle-plugin'
 
-version = '1.1.0-rc.2'
-group = 'xyz.errorist'
+version = '1.1.0-rc.3'
+group = 'com.ssn'
 
 repositories {
     jcenter()
@@ -26,15 +26,15 @@ dependencies {
 }
 
 pluginBundle {
-  website = 'https://lab.errorist.xyz/gradle/versioneer'
-  vcsUrl = 'https://lab.errorist.xyz/gradle/versioneer'
+  website = 'https://github.com/streetlightvision/versioneer'
+  vcsUrl = 'https://github.com/streetlightvision/versioneer'
 
   description = 'Infer version from git references'
   tags = ['version', 'git']
 
   plugins {
     versioneerPlugin {
-      id = 'xyz.errorist.versioneer'
+      id = 'com.ssn.versioneer'
       displayName = 'Versioneer'
     }
   }
