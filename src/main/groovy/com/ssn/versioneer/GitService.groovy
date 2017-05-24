@@ -84,7 +84,7 @@ class GitService extends SCMService {
                 throw new GitCommandException("undescridable: ${stderr}")
             }
             else if (stdout == '') {
-                throw new GitCommandException("empty tag")
+                throw new GitCommandException("empty describe")
             }
             else {
                 return Description.parse(stdout.trim())
