@@ -7,7 +7,7 @@ class Command {
         def stderr = new StringBuilder()
         def exit = cmd.execute(envs, workdir).with {
             consumeProcessOutput(stdout, stderr)
-            waitForOrKill(10000)
+            waitForOrKill(300000)
             exitValue()
         }
         [exit: exit, stdout: stdout, stderr: stderr] as Response
